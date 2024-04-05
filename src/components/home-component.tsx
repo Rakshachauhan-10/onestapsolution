@@ -1,7 +1,10 @@
+"use client"
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+
 
 export function HomeComponent() {
 
@@ -23,6 +26,30 @@ export function HomeComponent() {
     },
   ]
 
+  const [pos, setPos] = useState(null) as any
+
+  const getPostion = async (pos: any) => {
+    setPos({
+      lat: pos.coords.latitude,
+      long: pos.coords.longitude
+    })
+    console.log(pos)
+  }
+  useEffect(() => {
+
+    if (navigator.geolocation) {
+      navigator.permissions.query({ name: 'geolocation' }).then(function (result) { console.log(result.state); })
+      navigator.geolocation.getCurrentPosition(getPostion)
+    } else {
+      console.log("Geolocation is not available")
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!pos) return
+    console.log(pos)
+  }, [pos])
+
   return (
     <section className="w-full h-screen py-12 md:py-24 flex items-center justify-center bg-black">
       <div className="flex flex-col justify-center space-y-4 text-center">
@@ -42,7 +69,13 @@ export function HomeComponent() {
                 key={tab.name}
                 className={`px-4 py-2 text-sm font-medium rounded-md ${tab.current ? "bg-white text-black" : "text-white"} hover:bg-white hover:text-black`}
               >
-                <Link href={tab.href}>
+                <Link href={{
+                  pathname: tab.href,
+                  query: {
+                    lat: pos?.lat,
+                    long: pos?.long
+                  }
+                }}>
                   {tab.name}
                 </Link>
               </Button>
