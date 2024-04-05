@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
 const monst = Montserrat({
   weight: ['400', '500', '600', '700'],
@@ -19,7 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={monst.className}>{children}</body>
+      <body className={
+        cn([
+          monst,
+          'bg-[#151515]'
+        ])
+      }>{children}</body>
     </html>
   );
 }

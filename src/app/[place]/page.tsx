@@ -1,8 +1,8 @@
-import React from 'react'
+import PlaceComponent from '@/components/PlaceComponent'
 
 const page = () => {
     return (
-        <div>page</div>
+        <PlaceComponent />
     )
 }
 
